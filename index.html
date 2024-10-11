@@ -27,8 +27,7 @@
             width: 100%; /* 화면 너비에 맞게 이미지 크기 조정 */
             height: auto; /* 가로 세로 비율 유지 */
         }
-        
-        
+
         .falling-image {
             position: fixed;
             top: 0;
@@ -40,11 +39,11 @@
 
         @keyframes fall {
             0% {
-                transform: translateY(-100px) rotate(0deg);
+                transform: translateY(-100px) rotate(var(--rotation-start));
                 opacity: 0.4;
             }
             100% {
-                transform: translateY(100vh) rotate(360deg); /* 회전하며 떨어지도록 설정 */
+                transform: translateY(100vh) rotate(var(--rotation-end)); /* 회전하며 떨어지도록 설정 */
                 opacity: 0;
             }
         }
@@ -80,7 +79,14 @@
             img.classList.add('falling-image');
             img.style.left = Math.random() * 100 + 'vw'; // 화면 랜덤 위치
             img.style.animationDuration = Math.random() * 5 + 5 + 's'; // 이미지 떨어지는 속도
-            img.style.transform = `rotate(${Math.random() * 360}deg)`; // 랜덤한 회전 각도 설정
+
+            // 랜덤한 시작 및 끝 회전 각도 설정
+            const rotationStart = Math.random() * 360;
+            const rotationEnd = Math.random() * 360 + 360; // 회전 각도 더 크게
+
+            img.style.setProperty('--rotation-start', `${rotationStart}deg`);
+            img.style.setProperty('--rotation-end', `${rotationEnd}deg`);
+            
             body.appendChild(img);
         }
     </script>
