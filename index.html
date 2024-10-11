@@ -18,11 +18,37 @@
 
     <style>
         body {
+            margin: 0;
+            overflow: hidden; /* 스크롤 없애기 */
             background-color: transparent; /* 배경 색상을 투명으로 설정 */
         }
-        img {
-            width: 100%; /* 화면 너비에 맞게 이미지 크기 조정 */
-            height: auto; /* 가로 세로 비율 유지 */
+
+        .falling-image {
+            position: fixed;
+            top: 0;
+            z-index: 9999;
+            opacity: 0.4; /* 투명도 10% 높임 (40%) */
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg); /* 회전하며 떨어지도록 설정 */
+                opacity: 0;
+            }
+        }
+
+        /* 이미지 크기와 회전 조정 */
+        .falling-image:nth-child(odd) {
+            width: 50px;
+        }
+        .falling-image:nth-child(even) {
+            width: 80px;
         }
     </style>
 </head>
@@ -31,6 +57,28 @@
 
     <!-- 기존 이미지 -->
     <img src="https://1drv.ms/i/s!ApO_KMRs8HgThbJgic2QPG-i-cqDWQ?embed=1&width=1080&height=1080" alt="My Image">
+
+    <!-- Falling Image Effect -->
+    <script>
+        const numberOfImages = 10; // 이미지 개수 설정
+        const body = document.body;
+
+        for (let i = 0; i < numberOfImages; i++) {
+            const img = document.createElement('img');
+            
+            // 50% 확률로 두 가지 이미지를 선택
+            const randomChoice = Math.random() < 0.5 
+                ? 'https://1drv.ms/i/s!ApO_KMRs8HgThbgIipkwdUJoiK1q9g?embed=1&width=490&height=618'
+                : 'https://1drv.ms/i/s!ApO_KMRs8HgThZlD-sDDsUwxoID_TA?embed=1&width=1200&height=1600';
+
+            img.src = randomChoice;
+            img.classList.add('falling-image');
+            img.style.left = Math.random() * 100 + 'vw'; // 화면 랜덤 위치
+            img.style.animationDuration = Math.random() * 5 + 5 + 's'; // 이미지 떨어지는 속도
+            img.style.transform = `rotate(${Math.random() * 360}deg)`; // 랜덤한 회전 각도 설정
+            body.appendChild(img);
+        }
+    </script>
 
     <!-- Naver Analytics Script -->
     <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
