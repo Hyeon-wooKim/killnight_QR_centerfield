@@ -1,3 +1,6 @@
+<!-- 유로스X킬나잇 랜딩 페이지 -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,11 +12,11 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-D89VXQGBVC"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-D89VXQGBVC');
+        gtag('config', 'G-D89VXQGBVC');
     </script>
 
     <style>
@@ -21,18 +24,24 @@
             margin: 0;
             overflow: hidden; /* 스크롤 없애기 */
             background-color: black;
+            display: flex; /* 중앙 배치 위한 flex 설정 */
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            height: 100vh; /* 화면 전체 높이 */
         }
 
         img {
-            width: 100%; /* 화면 너비에 맞게 이미지 크기 조정 */
-            height: auto; /* 가로 세로 비율 유지 */
+            width: auto; /* 비율 유지 */
+            height: auto; /* 비율 유지 */
+            max-width: 100%; /* 이미지가 화면보다 커지지 않도록 설정 */
+            max-height: 100%; /* 이미지가 화면 높이보다 커지지 않도록 설정 */
         }
 
         .falling-image {
             position: fixed;
             top: 0;
             z-index: 9999;
-            opacity: 0.4; /* 투명도 10% 높임 (40%) */
+            opacity: 0.4;
             pointer-events: none;
             animation: fall linear infinite;
         }
@@ -43,24 +52,48 @@
                 opacity: 0.4;
             }
             100% {
-                transform: translateY(100vh) rotate(var(--rotation-end)); /* 회전하며 떨어지도록 설정 */
+                transform: translateY(100vh) rotate(var(--rotation-end));
                 opacity: 0;
             }
         }
 
-        /* 이미지 크기와 회전 조정 */
         .falling-image:nth-child(odd) {
             width: 50px;
         }
+
         .falling-image:nth-child(even) {
             width: 80px;
+        }
+
+        /* 로딩 화면 스타일 */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading-screen img {
+            width: 200px;
+            height: auto;
         }
     </style>
 </head>
 
 <body>
+    <!-- 로딩 화면 -->
+    <div id="loading-screen">
+        <img src="https://1drv.ms/i/s!ApO_KMRs8HgThbgIipkwdUJoiK1q9g?embed=1&width=490&height=618" alt="Loading Image">
+    </div>
+
     <!-- 기존 이미지 -->
-    <img src="https://1drv.ms/i/s!ApO_KMRs8HgThbJgic2QPG-i-cqDWQ?embed=1&width=1080&height=1080" alt="My Image">
+    <img src="https://1drv.ms/i/s!ApO_KMRs8HgThbJgic2QPG-i-cqDWQ?embed=1&width=1080&height=1080" alt="Main Image">
 
     <!-- Falling Image Effect -->
     <script>
@@ -80,25 +113,37 @@
             img.style.left = Math.random() * 100 + 'vw'; // 화면 랜덤 위치
             img.style.animationDuration = Math.random() * 5 + 5 + 's'; // 이미지 떨어지는 속도
 
-            // 랜덤한 시작 및 끝 회전 각도 설정
+            // 랜덤한 시작 회전 각도 설정
             const rotationStart = Math.random() * 360;
-            const rotationEnd = Math.random() * 360 + 360; // 회전 각도 더 크게
 
+            // 50% 확률로 시계방향 또는 반시계방향 회전 결정
+            const isClockwise = Math.random() < 0.5; // 50% 확률로 방향 설정
+            const rotationEnd = isClockwise 
+                ? rotationStart + (Math.random() * 360 + 360)  // 시계방향 회전
+                : rotationStart - (Math.random() * 360 + 360); // 반시계방향 회전
+
+            // 회전 시작 및 끝 각도 설정
             img.style.setProperty('--rotation-start', `${rotationStart}deg`);
             img.style.setProperty('--rotation-end', `${rotationEnd}deg`);
-            
+
             body.appendChild(img);
         }
+
+        // 페이지 로딩 후 로딩 화면 제거
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.style.display = 'none'; // 로딩 화면 숨기기
+        });
     </script>
 
     <!-- Naver Analytics Script -->
     <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
     <script type="text/javascript">
-      if(!wcs_add) var wcs_add = {};
-      wcs_add["wa"] = "a1d2beb82ec91";
-      if(window.wcs) {
-          wcs_do();
-      }
+        if (!wcs_add) var wcs_add = {};
+        wcs_add["wa"] = "a1d2beb82ec91";
+        if (window.wcs) {
+            wcs_do();
+        }
     </script>
 
 </body>
